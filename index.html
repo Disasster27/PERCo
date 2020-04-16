@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>PERCo</title>
+</head>
+<body>
+    <header class="header">
+            <div class="header__wrapper">
+                <a href="./index.html" class="logo"><img src="https://img.icons8.com/bubbles/100/000000/picture.png"/></a>
+                <div>
+                    Photo Gallery
+                </div>
+            </div>
+    </header>
+    <main class="main">
+        
+        <div class="main__gallery">
+            <!-- <div class="photo"><img class="photo__image" src="https://via.placeholder.com/150/92c952" alt="Photo"></div> -->
+            
+        </div>
+        <div class="main__button">More</div>
+        
+    </main>
+    
+    <div class="blackout invisible">
+            <div class="lightbox ">
+                <div class="lightbox__photo">
+                    <div class="lightbox__prev"><i class="fas fa-chevron-left"></i></div>
+                    <div class="lightbox__next"><i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="lightbox__column">
+                    <div class="lightbox__info">
+                        <div class="lightbox__likes">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="lightbox__likes-count">
+                            34
+                        </div>
+                    </div>
+                    <div class="lightbox__comments">
+                        <!-- <div class="lightbox__post">
+                                <div class="lightbox__avatar" >
+                                    <img src="https://via.placeholder.com/40" alt="Avatar">
+                                </div>
+                                    <div>
+                                        <div class="lightbox__name" >
+                                            yyyyyyyyyyyyyyg
+                                        </div>
+                                        <div class="lightbox__text" >
+                                            dfnftnfntftn
+                                            tfnnnnnnnnnnnnnnt
+                                            ttttttttttttttteeeee
+                                        </div>
+                                    </div>`;
+                        </div> -->
+                    </div>
+                    <form action="">
+                        <div class="textarea invisible">
+                        <textarea wrap="hard" cols="35" class="textarea__field"  placeholder="Введите комментарий" maxlength="290"></textarea>  
+                    </div>
+                    <div class="textarea__control">
+                        <div class="textarea__write">Написать комментарий...</div>
+                        <div class="textarea__button invisible">
+                            <div class="textarea__cancel">Отмена</div>
+                            <div class="textarea__send">Отправить</div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <div class="lightbox__close"><i class="fas fa-times"></i></div>
+            </div>
+        </div>
+        <div hidden id="spinner"></div>
+    <footer class="footer">
+        <a href="https://icons8.com/icon/122835/image">Image icon by Icons8</a>
+    </footer>  
+    <script src="./script.js"></script>
+</body>
+</html>
