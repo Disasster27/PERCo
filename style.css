@@ -75,12 +75,13 @@ body {
 }
 .lightbox {
     display: flex;
+    flex-direction: column;
     margin: auto;
     position: relative;
     
 }
 .lightbox__photo {
-    width: 600px;
+    max-width: 600px;
     height: 600px;
     background-color: RGBA(225, 222, 252, .7);
 }
@@ -230,52 +231,38 @@ body {
     animation: spin 1s infinite linear
   }
   
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-@media (min-width: 650px) and (max-width: 950px) {
-.lightbox {
-     flex-direction: column;
-}    
-.lightbox__column {
-    width: 600px;
+@media (min-width: 950px) {
+    .lightbox {
+        flex-direction: row;
+    } 
 }
-.textarea__field {
-    width: 100%;
+@media (min-width: 650px) and (max-width: 950px) {    
+    .lightbox__column {
+        width: 600px;
+    }
 }
-}
-@media (min-width: 450px) and (max-width: 649px) {
+@media (min-width: 450px) and (max-width: 649px) {  
     .lightbox__photo {
+            height: 400px;
+    }
+    .lightbox__column {
         width: 400px;
-        height: 400px;
-}
-.lightbox {
-    flex-direction: column;
-} 
-.lightbox__column {
-    width: 400px;
-}
-.textarea__field {
-    width: 100%;
-}
+    }
 }
 @media screen and (max-width: 449px) {
     .lightbox__photo {
-        width: 300px;
         height: 300px;
-}
-.lightbox {
-    flex-direction: column;
-} 
-.lightbox__column {
-    width: 300px;
-}
-.textarea__field {
-    width: 100%;
+    }
+    .lightbox__column {
+        width: 300px;
+    }
 }
