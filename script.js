@@ -14,6 +14,9 @@ function getPhotos () {
     spinner.removeAttribute('hidden');
     fetch ( urlPhoto + `?_page=${ pageNumber }&_limit=${ photoLimit }` )
     .then ( response => response.json() )
+    .catch((err) => {
+        console.log(err)
+        return getAllPhotos ()})
     .then( response => {
         spinner.setAttribute('hidden', '');
         renderGallery ( response );
@@ -21,10 +24,9 @@ function getPhotos () {
     } );
 };
 function getAllPhotos () {
-    fetch( urlJson )
+    return fetch( urlJson )
     .then( response => response.json() )
     .then( response => {
-        console.log(response);
         allPhotos = response;
         console.log(allPhotos)
     } )
@@ -34,8 +36,9 @@ function getAllPhotos () {
 
 function getJson (  ) {
     let items = allPhotos.slice( ( ( pageNumber - 1 ) * photoLimit ), ( pageNumber * photoLimit ) );
-    renderGallery ( items );
-    pageNumber += 1;
+    // renderGallery ( items );
+    // pageNumber += 1;
+    return items;
 };
 
 function renderGallery ( response ) {
@@ -72,7 +75,13 @@ function showLightbox ( elem ) {
     spinner.removeAttribute('hidden');
     fetch( urlPhoto + `?id=${ elem.dataset.photoId }` )
         .then( res =>  res.json() )
+        .catch((err) => {
+            console.log(err)
+            let photo = allPhotos.find( ( item ) => item.id == elem.dataset.photoId )
+            return [photo];
+        } )
         .then( el => {
+            console.log(el)
             spinner.setAttribute('hidden', '');
             document.querySelector( '.lightbox__photo' ).innerHTML = `<img class="photo__image" 
                                                                         data-photo-id="${ el[0].id }" 
