@@ -66,23 +66,22 @@ function addEvent () {
         }
     } )
 };
-
+{/* <div hidden id="spinner"></div> */}
 function showLightbox ( elem ) {
     console.log(elem)
     document.querySelector( 'body' ).classList.add( 'lock' );
     document.querySelector( '.blackout' ).classList.remove( 'invisible' );
-    spinner.removeAttribute('hidden');
+    // spinner.removeAttribute('hidden');
+    document.querySelector( '.lightbox__photo' ).innerHTML = '<div id="spinner"></div>'
     fetch( urlPhoto + `?id=${ elem.dataset.photoId }` )
         .then( res =>  res.json() )
         .catch((err) => {
-            console.log(err)
-            console.log(elem.dataset.photoId)
             let photo = allPhotos.find( ( item ) => item.id == elem.dataset.photoId )
             return [photo];
         } )
         .then( el => {
             // console.log(el)
-            spinner.setAttribute('hidden', '');
+            // spinner.setAttribute('hidden', '');
             document.querySelector( '.lightbox__photo' ).innerHTML = `<img class="photo__image" 
                                                                         data-photo-id="${ el[0].id }" 
                                                                         src="${ el[0].url }" 
@@ -130,6 +129,7 @@ function closeLightbox () {
     document.querySelector( 'body' ).classList.remove( 'lock' );
     document.querySelector( '.lightbox__comments' ).innerHTML = '';
     document.querySelector( '.lightbox__photo' ).innerHTML = '';
+    cancelComment ();
 };
 
 function getPost ( id ) {

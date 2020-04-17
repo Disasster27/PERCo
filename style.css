@@ -81,7 +81,7 @@ body {
     
 }
 .lightbox__photo {
-    max-width: 600px;
+    width: 600px;
     height: 600px;
     background-color: RGBA(225, 222, 252, .7);
 }
@@ -209,7 +209,7 @@ body {
 
 
 #spinner:not([hidden]) {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -240,6 +240,10 @@ body {
   }
 }
 
+
+
+
+
 @media (min-width: 950px) {
     .lightbox {
         flex-direction: row;
@@ -253,6 +257,7 @@ body {
 @media (min-width: 450px) and (max-width: 649px) {  
     .lightbox__photo {
             height: 400px;
+            width: 400px;
     }
     .lightbox__column {
         width: 400px;
@@ -261,6 +266,7 @@ body {
 @media screen and (max-width: 449px) {
     .lightbox__photo {
         height: 300px;
+        width: 300px;
     }
     .lightbox__column {
         width: 300px;
