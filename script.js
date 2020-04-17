@@ -36,8 +36,6 @@ function getAllPhotos () {
 
 function getJson (  ) {
     let items = allPhotos.slice( ( ( pageNumber - 1 ) * photoLimit ), ( pageNumber * photoLimit ) );
-    // renderGallery ( items );
-    // pageNumber += 1;
     return items;
 };
 
@@ -70,6 +68,7 @@ function addEvent () {
 };
 
 function showLightbox ( elem ) {
+    console.log(elem)
     document.querySelector( 'body' ).classList.add( 'lock' );
     document.querySelector( '.blackout' ).classList.remove( 'invisible' );
     spinner.removeAttribute('hidden');
@@ -77,11 +76,12 @@ function showLightbox ( elem ) {
         .then( res =>  res.json() )
         .catch((err) => {
             console.log(err)
+            console.log(elem.dataset.photoId)
             let photo = allPhotos.find( ( item ) => item.id == elem.dataset.photoId )
             return [photo];
         } )
         .then( el => {
-            console.log(el)
+            // console.log(el)
             spinner.setAttribute('hidden', '');
             document.querySelector( '.lightbox__photo' ).innerHTML = `<img class="photo__image" 
                                                                         data-photo-id="${ el[0].id }" 
@@ -94,8 +94,6 @@ function showLightbox ( elem ) {
             showComments ( res );
         } ) ;
 
-    addLike ();    
-
     document.querySelector( '.lightbox__close' ).addEventListener( 'click', ( e ) => {
         if ( e.target.closest( '.lightbox__close' ) ) {
             closeLightbox ()
@@ -106,7 +104,25 @@ function showLightbox ( elem ) {
             closeLightbox ()
         };
     } );
+    showNextImg( elem );
+    showPrevImg ( elem );
+    addLike ();
     addPost();
+};
+function showNextImg ( elem ) {
+    document.querySelector( '.lightbox__next' ).onclick = function () {
+        document.querySelector( '.lightbox__comments' ).innerHTML = '';
+    document.querySelector( '.lightbox__photo' ).innerHTML = '';
+        showLightbox ( elem.closest( '.photo' ).nextElementSibling.firstChild )
+    };
+};
+
+function showPrevImg ( elem ) {
+    document.querySelector( '.lightbox__prev' ).onclick = function () {
+        document.querySelector( '.lightbox__comments' ).innerHTML = '';
+    document.querySelector( '.lightbox__photo' ).innerHTML = '';
+        showLightbox ( elem.closest( '.photo' ).previousElementSibling.firstChild )
+    };
 };
 
 function closeLightbox () {
@@ -130,6 +146,7 @@ function getPost ( id ) {
 };
 
 function showComments ( comments ) {
+    // console.log(comments)
     const boxComments = document.querySelector( '.lightbox__comments' );
     comments.forEach( elem => {
         const post = document.createElement( 'div' );
@@ -187,10 +204,13 @@ function addLike () {
     document.querySelector( '.lightbox__likes' ).addEventListener( 'click', ( event ) => {
         const likesCount = +(document.querySelector( '.lightbox__likes-count' ).textContent);
         if ( isLike ) {
+            document.querySelector( '.lightbox__likes' ).style = 'color: darkgrey';
             document.querySelector( '.lightbox__likes-count' ).textContent = likesCount - 1;
             isLike = false;
             event.stopImmediatePropagation();
         } else {
+            
+            document.querySelector( '.lightbox__likes' ).style = 'color: #FF6D60';
             document.querySelector( '.lightbox__likes-count' ).textContent= likesCount + 1;
             isLike = true;
             event.stopImmediatePropagation();

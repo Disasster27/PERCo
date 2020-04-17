@@ -82,6 +82,28 @@ body {
     height: 600px;
     background-color: RGBA(225, 222, 252, .7);
 }
+.lightbox__photo-box {
+    position: relative;
+}
+.lightbox__prev,
+.lightbox__next {
+   position: absolute;
+   font-size: 40px;
+   top: 50%;
+   cursor: pointer;
+   color: #D2E5FC;
+   padding: 5px;
+}
+.lightbox__prev:hover,
+.lightbox__next:hover {
+    color: #82B0FF;
+}
+.lightbox__prev {
+    
+}
+.lightbox__next {
+    right: 0;
+}
 .lightbox__column {
     width: 300px;
     height: 600px;
@@ -99,10 +121,11 @@ body {
     margin: 5px;
     font-size: 25px;
     cursor: pointer;
+    color: #FF6D60;
 }
-.lightbox__likes:hover {
+/* .lightbox__likes:hover {
     color: gainsboro;
-}
+} */
 .textarea__control {
     line-height: 50px;
     background-color: #D2E5FC;
@@ -194,7 +217,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 45;
+    /* z-index: 45; */
   }
   
   #spinner::after {
