@@ -3,45 +3,24 @@
 let pageNumber = 1;
 const photoLimit = 20;
 const urlPhoto = `https://jsonplaceholder.typicode.com/photos`;
-const urlJson = `./json/photos.json`;
 const urlComments = `https://jsonplaceholder.typicode.com/comments`;
-let allPhotos = [];
 let isLike = true;
 const gallery = document.querySelector( '.main__gallery' );
 const spinner = document.getElementById("spinner");
 
+
 function getPhotos () {
     spinner.removeAttribute('hidden');
-    fetch ( urlPhoto + `?_page=${ pageNumber }&_limit=${ photoLimit }` )
-    .then ( response => response.json() )
-    .catch((err) => {
-        console.log(err)
-        return getAllPhotos ()})
-    .then( response => {
-        spinner.setAttribute('hidden', '');
+    const promise = getData(urlPhoto, pageNumber, photoLimit );
+    promise.then( response => {
         renderGallery ( response );
         pageNumber += 1;
-    } );
-};
-function getAllPhotos () {
-    return fetch( urlJson )
-    .then( response => response.json() )
-    .then( response => {
-        allPhotos = response;
-        console.log(allPhotos)
-    } )
-    .then ( res => getJson()  )
-};
-
-
-function getJson (  ) {
-    let items = allPhotos.slice( ( ( pageNumber - 1 ) * photoLimit ), ( pageNumber * photoLimit ) );
-    return items;
-};
+        spinner.setAttribute('hidden', '');
+    } ) 
+}
 
 function renderGallery ( response ) {
     response.forEach( element => renderPhoto ( element ) );
-
 };
 
 function  renderPhoto ( photoItem ) {
@@ -66,33 +45,24 @@ function addEvent () {
         }
     } )
 };
-{/* <div hidden id="spinner"></div> */}
+
 function showLightbox ( elem ) {
-    console.log(elem)
     document.querySelector( 'body' ).classList.add( 'lock' );
     document.querySelector( '.blackout' ).classList.remove( 'invisible' );
-    // spinner.removeAttribute('hidden');
     document.querySelector( '.lightbox__photo' ).innerHTML = '<div id="spinner"></div>'
-    fetch( urlPhoto + `?id=${ elem.dataset.photoId }` )
-        .then( res =>  res.json() )
-        .catch((err) => {
-            let photo = allPhotos.find( ( item ) => item.id == elem.dataset.photoId )
-            return [photo];
-        } )
-        .then( el => {
-            // console.log(el)
-            // spinner.setAttribute('hidden', '');
-            document.querySelector( '.lightbox__photo' ).innerHTML = `<img class="photo__image" 
-                                                                        data-photo-id="${ el[0].id }" 
-                                                                        src="${ el[0].url }" 
-                                                                        alt="${ el[0].title }">`;
-        } );
-    fetch( urlComments + `?postId=${ getPost ( elem.dataset.photoId) }` )
-        .then( res => res.json() )
-        .then( res => {
-            showComments ( res );
-        } ) ;
-
+    const elemId = elem.dataset.photoId;
+    const photoPromise = getLargePhoto ( urlPhoto, elemId );
+    photoPromise.then( response => {
+        document.querySelector( '.lightbox__photo' )
+            .innerHTML = `<img class="photo__image" 
+                            data-photo-id="${ response[0].id }" 
+                            src="${ response[0].url }" 
+                            alt="${ response[0].title }">`;
+    } )
+    const postId = getPost ( elem.dataset.photoId);
+    const commentsPromise = getComments ( urlComments, postId );
+    commentsPromise.then( response => showComments ( response ) );
+    
     document.querySelector( '.lightbox__close' ).addEventListener( 'click', ( e ) => {
         if ( e.target.closest( '.lightbox__close' ) ) {
             closeLightbox ()
@@ -111,7 +81,7 @@ function showLightbox ( elem ) {
 function showNextImg ( elem ) {
     document.querySelector( '.lightbox__next' ).onclick = function () {
         document.querySelector( '.lightbox__comments' ).innerHTML = '';
-    document.querySelector( '.lightbox__photo' ).innerHTML = '';
+        document.querySelector( '.lightbox__photo' ).innerHTML = '';
         showLightbox ( elem.closest( '.photo' ).nextElementSibling.firstChild )
     };
 };
@@ -119,7 +89,7 @@ function showNextImg ( elem ) {
 function showPrevImg ( elem ) {
     document.querySelector( '.lightbox__prev' ).onclick = function () {
         document.querySelector( '.lightbox__comments' ).innerHTML = '';
-    document.querySelector( '.lightbox__photo' ).innerHTML = '';
+        document.querySelector( '.lightbox__photo' ).innerHTML = '';
         showLightbox ( elem.closest( '.photo' ).previousElementSibling.firstChild )
     };
 };
@@ -146,7 +116,6 @@ function getPost ( id ) {
 };
 
 function showComments ( comments ) {
-    // console.log(comments)
     const boxComments = document.querySelector( '.lightbox__comments' );
     comments.forEach( elem => {
         const post = document.createElement( 'div' );
@@ -179,7 +148,6 @@ function addPost () {
                         body: '',
                     }
                 ];
-                console.log( document.querySelector( '.textarea__field' ).value )
                 newPost[ 0 ].body = document.querySelector( '.textarea__field' ).value;
                 showComments ( newPost )
                 cancelComment ()
@@ -219,7 +187,6 @@ function addLike () {
     } )
 };
 
-// getAllPhotos ();
 getPhotos();
 showMorePhoto ();
 addEvent ()
