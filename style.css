@@ -71,12 +71,6 @@ body {
 
 
                         /* LIGHTBOX */
-.lock {
-    overflow: hidden;
-}
-.invisible {
-    display: none;
-}
 .blackout {
     position: fixed;
     overflow-y: auto;
@@ -240,6 +234,15 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+
+
+
+.lock {
+    overflow: hidden;
+}
+.invisible {
+    display: none;
 }
 
 

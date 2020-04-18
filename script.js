@@ -231,7 +231,7 @@ function addLike () {
     } );
 };
 
-// getPhotos();
+getPhotos();
 showMorePhoto ();
 addEvent ();
 
