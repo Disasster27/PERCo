@@ -8,7 +8,9 @@ let isLike = true;
 const gallery = document.querySelector( '.main__gallery' );
 const spinner = document.getElementById("spinner");
 
-
+/**
+ *  @description Получение порции изображений с сервера.
+*/
 function getPhotos () {
     spinner.removeAttribute('hidden');
     const promise = getData(urlPhoto, pageNumber, photoLimit );
@@ -19,10 +21,18 @@ function getPhotos () {
     } ) 
 }
 
+/**
+ * @description Отрисовка полученной порции изображений.
+ * @param { array } response Массив полученных изображений.
+*/
 function renderGallery ( response ) {
     response.forEach( element => renderPhoto ( element ) );
 };
 
+/**
+ * @description Отрисовка каждого конкретного изображения.
+ * @param { object } photoItem Объект с информацией об изображении.
+*/
 function  renderPhoto ( photoItem ) {
     const photoElement = document.createElement( 'div' );
     photoElement.classList.add( 'photo' );
@@ -33,11 +43,17 @@ function  renderPhoto ( photoItem ) {
     gallery.insertAdjacentElement( 'beforeend', photoElement );
 };
 
+/**
+ * @description Навешивание события о загрузке очередной порции изображений с сервера при нажатии на кнопку.
+*/
 function showMorePhoto () {
     const mainButton = document.querySelector( '.main__button' );
     mainButton.addEventListener( 'click', getPhotos );
 };
 
+/**
+ * @description Установка события на каждое изображение об загрузке его в лайтбоксею
+*/
 function addEvent () {
     gallery.addEventListener( 'click', (e) => {
         if ( e.target.classList.contains( 'photo__image' ) ) {
@@ -46,6 +62,10 @@ function addEvent () {
     } )
 };
 
+/**
+ * @description Отображение лайтбокса с изображением.
+ * @param elem HTML-елемент изображения.
+*/
 function showLightbox ( elem ) {
     document.querySelector( 'body' ).classList.add( 'lock' );
     document.querySelector( '.blackout' ).classList.remove( 'invisible' );
@@ -59,7 +79,7 @@ function showLightbox ( elem ) {
                             src="${ response[0].url }" 
                             alt="${ response[0].title }">`;
     } )
-    const postId = getPost ( elem.dataset.photoId);
+    const postId = getPost ( +elem.dataset.photoId );
     const commentsPromise = getComments ( urlComments, postId );
     commentsPromise.then( response => showComments ( response ) );
     
@@ -78,6 +98,11 @@ function showLightbox ( elem ) {
     addLike ();
     addPost();
 };
+
+/**
+ * @description
+ * @param 
+*/
 function showNextImg ( elem ) {
     document.querySelector( '.lightbox__next' ).onclick = function () {
         document.querySelector( '.lightbox__comments' ).innerHTML = '';
@@ -94,6 +119,9 @@ function showPrevImg ( elem ) {
     };
 };
 
+/**
+ * @description Закрытие лайтбокса.
+*/
 function closeLightbox () {
     document.querySelector( '.blackout' ).classList.add( 'invisible' );
     document.querySelector( 'body' ).classList.remove( 'lock' );
@@ -102,11 +130,16 @@ function closeLightbox () {
     cancelComment ();
 };
 
+/**
+ * @description Получение ID поста для отобржения комментариев к этому посту.
+ * @param { number } id ID выбранного изображения.
+ * @returns { number }  ID поста.
+*/
 function getPost ( id ) {
-
+    console.log(id)
     let post = 1;
     if ( id > 0 && id <= 100 ) {
-        post = +id;
+        post = id;
     } else if ( id > 100 && id < 1000 ) {
         post = id % 100;
     } else if ( id > 1000 ) {
@@ -115,6 +148,10 @@ function getPost ( id ) {
     return post;
 };
 
+/**
+ * @description Отрисовка комментариев к изображению.
+ * @param { array } comments Массив объектов с инфо о комментариях.
+*/
 function showComments ( comments ) {
     const boxComments = document.querySelector( '.lightbox__comments' );
     comments.forEach( elem => {
@@ -135,6 +172,9 @@ function showComments ( comments ) {
     } )
 };
 
+/**
+ * @description Написание комментария.
+*/
 function addPost () {
     document.querySelector( '.textarea__control' ).addEventListener( 'click', ( event ) => {
         document.querySelector( '.textarea' ).classList.remove( 'invisible' );
@@ -161,13 +201,19 @@ function addPost () {
     } );
 };
 
+/**
+ * @description Отмена ввода комментария.
+*/
 function cancelComment () {
     document.querySelector( '.textarea__field' ).value = '';
     document.querySelector( '.textarea' ).classList.add( 'invisible' );
     document.querySelector( '.textarea__button' ).classList.add( 'invisible' );
     document.querySelector( '.textarea__write' ).classList.remove( 'invisible' );
-}
+};
 
+/**
+ * @description Добавление/удаление лайка
+*/
 function addLike () {
     document.querySelector( '.lightbox__likes' ).addEventListener( 'click', ( event ) => {
         const likesCount = +(document.querySelector( '.lightbox__likes-count' ).textContent);
@@ -177,17 +223,15 @@ function addLike () {
             isLike = false;
             event.stopImmediatePropagation();
         } else {
-            
             document.querySelector( '.lightbox__likes' ).style = 'color: #FF6D60';
             document.querySelector( '.lightbox__likes-count' ).textContent= likesCount + 1;
             isLike = true;
             event.stopImmediatePropagation();
-        }
-
-    } )
+        };
+    } );
 };
 
-getPhotos();
+// getPhotos();
 showMorePhoto ();
-addEvent ()
+addEvent ();
 
